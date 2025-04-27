@@ -24,3 +24,6 @@ const authSlice = createSlice({
 export const {login, logout} = authSlice.actions
 
 export default authSlice.reducer
+
+
+//Redux is a state management tool that helps you store, manage, and update your app’s global state in a predictable way.

@@ -29,3 +29,5 @@ const Select = ({
 export default React.forwardRef(Select)
 
 // if there is no element in optionn field then it will crass so we optionally mapping this part
+
+// input.jsx is type-1 of writing component using forwordRef and this i.e select.jsx is type-2 of writing forwordRef 

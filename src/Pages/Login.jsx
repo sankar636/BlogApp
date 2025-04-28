@@ -1,12 +1,12 @@
-// import React from 'react'
-// import Login from '../components/Login.jsx'
+import React from 'react'
+import {Login as LoginComponent} from '../components/index.js'
 
-// const Login = () => {
-//   return (
-//     <div>
-//       <Login />
-//     </div>
-//   )
-// }
+const Login = () => {
+  return (
+    <div>
+      <LoginComponent />
+    </div>
+  )
+}
 
-// export default Login
+export default Login

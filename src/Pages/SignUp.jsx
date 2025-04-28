@@ -1,11 +1,11 @@
-// import React from 'react'
-// import SignUP from '../components/SignUP'
-// const SignUp = () => {
-//   return (
-//     <div>
-//       <SignUp />
-//     </div>
-//   )
-// }
+import React from 'react'
+import {SignUp as SignUpComponent} from '../components/index.js'
+const SignUp = () => {
+  return (
+    <div>
+      <SignUpComponent />
+    </div>
+  )
+}
 
-// export default SignUp
+export default SignUp

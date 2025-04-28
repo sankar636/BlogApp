@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import './App.css'
 import authService from './appwrite/auth.js'
-import {login, logout} from './store/authSlice.js'
+import { login, logout } from './store/authSlice.js'
 import { Outlet } from 'react-router-dom'
-// import Header from './components/Header/Header'
-// import Footer from './components/Footer/Footer'
-import { Header,Footer } from './components/index.js'
+import { Header, Footer } from './components/index.js'
 function App() {
 
   // console.log(import.meta.env.VITE_APPWRITE_URL);  
@@ -15,9 +13,9 @@ function App() {
   const dispatch = useDispatch()
   useEffect(() => {
     authService.getCurrentUser().then((userData) => {
-      if(userData){
-        dispatch(login({userData}))
-      }else{
+      if (userData) {
+        dispatch(login(userData))
+      } else {
         dispatch(logout())
       }
     }).catch((error) => {
@@ -26,17 +24,23 @@ function App() {
     }).finally(() => setLoading(false))
   }, [dispatch])
 
-  return !loading ? (
-    <div className='min-h-screen flex flex-wrap content-between'>
-      <div className='w-full block'>
-        <Header />
-        <main>
-          <Outlet /> 
-        </main>
-        <Footer />
-      </div>
+  return loading ? (
+    <div className="w-full text-center mt-10">
+      <p>Loading...</p>
     </div>
-  ) : null
+  ) : (
+    <div className="min-h-screen flex flex-wrap content-between bg-gray-400">
+          <div className="w-full block">
+              <Header />
+              <main>
+                  <Outlet />
+              </main>
+          </div>
+          <div className="w-full block">
+              <Footer />
+          </div>
+      </div>
+  );
 
   // return (
   //   <>

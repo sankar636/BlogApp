@@ -12,7 +12,7 @@ import { login as authLogin } from '../store/authSlice.js'
 const Login = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const {register, handelSubimt} = useForm()
+    const {register, handleSubmit } = useForm()
     const [error, setError] = useState("")
 
     const login = async(data) => {
@@ -48,7 +48,7 @@ const Login = () => {
                 </Link>
             </p>
             {error && <p>{error}</p> }
-            <form onSubmit={handelSubimt(login)}>
+            <form onSubmit={handleSubmit(login)}>
                 <div>
                     <Input
                     {...register("email", {required: true})}
@@ -62,9 +62,9 @@ const Login = () => {
                     placeholder="Password"
                     type="password"
                     />
-                    <button type='submit'>
+                    <Button type='submit'>
                         Sign In
-                    </button>
+                    </Button>
                 </div>
             </form>
         </div>

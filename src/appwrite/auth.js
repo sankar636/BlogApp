@@ -76,10 +76,9 @@ async function createAccount({ email, password, name }) {
     try {
         const userAccount = await account.create(ID.unique(), email, password, name);
         if (userAccount) {
-            // Call another method if needed
-        } else {
-            return userAccount;
+            return login({ email, password }); // ✅ call directly
         }
+        return userAccount;
     } catch (error) {
         console.log(error);
         throw error;

@@ -1,20 +1,20 @@
 import { Link, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
-import Button from './Button.jsx'
+import {Button} from './index.js'
 import Input from './Input.jsx'
-import Logo from './Logo.jsx'
+import {Logo} from './index.js'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import service from '../appwrite/config.js'
 import { login } from '../store/authSlice.js'
 import authService from '../appwrite/auth.js'
 
-const SignUP = () => {
+const SignUp = () => {
     const navigate = useNavigate()
     //Error Handel by state
     const [error, setError] = useState("")
     const dispatch = useDispatch()
-    const {register, handelSubmit} = useForm()
+    const {register, handleSubmit } = useForm() // it's not hadelSubmit(it is an error)
 
     const create = async (data) => {
         setError("")
@@ -23,12 +23,13 @@ const SignUP = () => {
             if(userData){
                const user = await authService.getCurrentUser()
                 if(user){
-                    dispatch(login({user}))
+                    dispatch(login(user))
                     navigate('/')
                 }
             }
         } catch (error) {
-            setError(error.message)
+            console.log("Error is: ",error);
+            setError(error.message || "Something went wrong while creating Account")
         }
     }
   return (
@@ -40,7 +41,7 @@ const SignUP = () => {
                 </span>
             </div>
             <h2>Create Account</h2>
-            <p>Already Have An Account?$nbsp:
+            <p>Already Have An Account?&nbsp;
                 <Link
                 to="/login"
                 >
@@ -48,7 +49,7 @@ const SignUP = () => {
                 </Link>
             </p>
             {error && <p>{error}</p> }
-            <form onSubmit={handelSubmit(create)}>
+            <form onSubmit={handleSubmit(create)}>
                 <div>
                 <Input
                     {...register("name", {required: true})}
@@ -67,9 +68,9 @@ const SignUP = () => {
                     placeholder="Password"
                     type="password"
                     />
-                    <button type='submit'>
+                    <Button type='submit'>
                         Create Account{" "}
-                    </button>
+                    </Button>
                 </div>
             </form>
         </div>
@@ -77,4 +78,4 @@ const SignUP = () => {
   )
 }
 
-export default SignUP
+export default SignUp

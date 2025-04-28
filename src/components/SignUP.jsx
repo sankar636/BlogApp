@@ -1,4 +1,3 @@
-import authService from '../appwrite/auth.js'
 import { Link, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 import Button from './Button.jsx'
@@ -7,26 +6,27 @@ import Logo from './Logo.jsx'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import service from '../appwrite/config.js'
-import { login as authLogin } from '../store/authSlice.js'
+import { login } from '../store/authSlice.js'
+import authService from '../appwrite/auth.js'
 
-const Login = () => {
+const SignUP = () => {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const {register, handelSubimt} = useForm()
+    //Error Handel by state
     const [error, setError] = useState("")
+    const dispatch = useDispatch()
+    const {register, handelSubmit} = useForm()
 
-    const login = async(data) => {
+    const create = async (data) => {
         setError("")
         try {
-           const session = await authService.login(data)
-           if(session){
-            const userData = await authService.getCurrentUser()
-            if (userData) {
-                dispatch(authLogin(userData))
-                navigate("/")
+            const userData = await authService.createAccount(data)
+            if(userData){
+               const user = await authService.getCurrentUser()
+                if(user){
+                    dispatch(login({user}))
+                    navigate('/')
+                }
             }
-
-           }
         } catch (error) {
             setError(error.message)
         }
@@ -36,20 +36,25 @@ const Login = () => {
         <div>
             <div>
                 <span>
-                    <Logo width="100%"/>
+                    <Logo/>
                 </span>
             </div>
-            <h2>Sign In to your account</h2>
-            <p>Don&apos;t have any Accoumt?&nbsp;
+            <h2>Create Account</h2>
+            <p>Already Have An Account?$nbsp:
                 <Link
-                to="/signup"
+                to="/login"
                 >
-                    Sign Up
+                    Sign In
                 </Link>
             </p>
             {error && <p>{error}</p> }
-            <form onSubmit={handelSubimt(login)}>
+            <form onSubmit={handelSubmit(create)}>
                 <div>
+                <Input
+                    {...register("name", {required: true})}
+                    label="Full Name: "
+                    placeholder="Full Name"
+                    />
                     <Input
                     {...register("email", {required: true})}
                     label="Email"
@@ -63,7 +68,7 @@ const Login = () => {
                     type="password"
                     />
                     <button type='submit'>
-                        Sign In
+                        Create Account{" "}
                     </button>
                 </div>
             </form>
@@ -72,4 +77,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default SignUP

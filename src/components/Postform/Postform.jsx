@@ -17,6 +17,37 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 
+// Submit function for form submit
+const submit = async (data) => {
+    if (post) {
+        const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
+        if (file) {
+            service.deleteFile(post.featuredImage)
+        }
+        const dbPost = await service.updatePost(post.$id, {
+            ...data, featuredImage: file ? file.$id : undefined
+        })
+        if (dbPost) {
+            navigate(`/post/${dbPost.$id}`)
+        }
+    } else {
+        const file = await service.uploadFile(data.image[0])
+        if (file) {
+            const fileId = file.$id
+            data.featuredImage = fileId
+            const dbPost = await service.createPost(
+                {
+                    ...data,
+                    userId: userData.$id
+                }
+            )
+            if(dbPost){
+                navigate(`/post/${dbPost.$id}`)
+            }
+        }
+    }
+}
+
 export default function ({ post }) {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
@@ -39,48 +70,48 @@ export default function ({ post }) {
     }, []);
 
     React.useEffect(() => {
-        watch((value, {name}) => {
-            if(name === "title"){
-                setValue("slug", slugTransform(value.title),{shouldValidate: true})
+        watch((value, { name }) => {
+            if (name === "title") {
+                setValue("slug", slugTransform(value.title), { shouldValidate: true })
             }
         })
-     }, [watch, slugTransform,setValue])
+    }, [watch, slugTransform, setValue])
 
-     return (
+    return (
         <form onSubmit={handleSubmit(submit)}
-        className="flex flex-wrap"
+            className="flex flex-wrap"
         >
             <div className="w-2/3 px-2">
-                <Input 
-                label = "Title"
-                placeholder = "Title"
-                className="mb-4"
-                {...register("title",{ required: true })}
+                <Input
+                    label="Title"
+                    placeholder="Title"
+                    className="mb-4"
+                    {...register("title", { required: true })}
                 />
                 <Input
-                label = "Slug  :"
-                placeholder = "Slug"
-                className="mb-4"
-                {...register("slug",{required: true})}
-                onInput={(e) => {
-                    setValue("slug",slugTransform(e.currentTarget.value),{shouldValidate: true})
-                }}
+                    label="Slug  :"
+                    placeholder="Slug"
+                    className="mb-4"
+                    {...register("slug", { required: true })}
+                    onInput={(e) => {
+                        setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true })
+                    }}
                 />
                 {/* Fro content use RTE */}
                 <RTE
-                label="Content"
-                name="content"
-                control={control}
-                defaultValue={getValues("content")}
+                    label="Content"
+                    name="content"
+                    control={control}
+                    defaultValue={getValues("content")}
                 />
             </div>
             <div className="w-1/3 px-2">
                 <Input
-                label="Featured Image"
-                type="file"
-                className="mb-4"
-                accept="image/png, image/jpg, image/jpeg"
-                {...register("image", {required: !post})}
+                    label="Featured Image"
+                    type="file"
+                    className="mb-4"
+                    accept="image/png, image/jpg, image/jpeg"
+                    {...register("image", { required: !post })}
                 />
                 {post && (
                     <div >
@@ -88,25 +119,25 @@ export default function ({ post }) {
                     </div>
                 )}
                 <Select
-                options={["active","inactive"]}
-                label="Status"
-                className="mb-4"
-                {...register("image", {required: !post})}
+                    options={["active", "inactive"]}
+                    label="Status"
+                    className="mb-4"
+                    {...register("image", { required: !post })}
                 />
                 <Button
-                type="submit"
-                bgColor={post ? "bg-green-400": undefined}
-                className="w-full"
+                    type="submit"
+                    bgColor={post ? "bg-green-400" : undefined}
+                    className="w-full"
                 >
-                    {post ? "update": "Submit"}
+                    {post ? "update" : "Submit"}
                 </Button>
             </div>
         </form>
-     )
+    )
 }
 
 /*
-const {register, handleSubmit, watch, setValue, control, getValues}  
+const {register, handleSubmit, watch, setValue, control, getValues}
 // these are comes from useForm so that we don't need to set the state(pre build in useForm)
 */
 // !post means --> if post is not there then we want it other wise we don't want it

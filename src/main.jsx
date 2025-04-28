@@ -13,9 +13,11 @@ import Home from './Pages/Home.jsx'
 import AddPosts from './Pages/AddPosts.jsx'
 import AllPosts from './Pages/AllPosts.jsx'
 import EditPosts from './Pages/EditPosts.jsx'
-import Login from './Pages/Login.jsx'
 import Post from './Pages/Post.jsx'
-import SignUp from './Pages/SignUp.jsx'
+// import Login from './Pages/Login.jsx'
+// import SignUp from './Pages/SignUp.jsx'
+import Login from './components/Login.jsx'
+import SignUP from './components/SignUp.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,7 +27,7 @@ const router = createBrowserRouter(
       <Route path='/all-posts' element={<AllPosts/>}></Route>
       <Route path='/EditPosts' element={<EditPosts/>}></Route>
       <Route path='/login' element={<Login/>}></Route>
-      <Route path='/signup' element={<SignUp/>}></Route>
+      <Route path='/signup' element={<SignUP/>}></Route>
       <Route path='/post' element={<Post/>}></Route>
     </Route>
   )

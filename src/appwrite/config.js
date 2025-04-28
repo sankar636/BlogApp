@@ -132,7 +132,7 @@ export class Service{
 
 }
 
-export class Service{}
+// export class Service{}
 
 const service = new Service()
 

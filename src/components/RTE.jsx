@@ -15,8 +15,10 @@ function RTE({
             }
             <Controller
             name={name || "Content"}
-            render={({field: {onChange}}) => (
+            control={control}
+            render={({field: {onChange,value}}) => (
                 <Editor
+                value={value}
                 initialValue={defaultValue}
                 init={{
                     branding: false,
@@ -30,16 +32,10 @@ function RTE({
                         'pagebreak', 'preview', 'quickbars', 'save', 'searchreplace', 'table',
                         'visualblocks', 'visualchars', 'wordcount'
                       ],
-                      toolbar: 'undo redo | accordion accordionremove | ' +
-                      'importword exportword exportpdf | math | ' +
-                      'blocks fontfamily fontsize | bold italic underline strikethrough | ' +
-                      'align numlist bullist | link image | table media | ' +
-                      'lineheight outdent indent | forecolor backcolor removeformat | ' +
-                      'charmap emoticons | code fullscreen preview | save print | ' +
-                      'pagebreak anchor codesample | ltr rtl',
+                      toolbar: "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | help",
                       content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                 }}
-                onEditorChange={onchange}
+                onEditorChange={onChange}
                 />
             )}
             /> 

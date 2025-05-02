@@ -17,7 +17,7 @@ export class Service{
         this.bucket = new Storage(this.client);
     }
 
-    async createPost(slug, {title, content, featuredImage, status, userId}){
+    async createPost({slug, title, content, featuredimage, status, userId}){
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -26,17 +26,18 @@ export class Service{
                 {
                     title,
                     content,
-                    featuredImage,
+                    featuredimage,
                     status,
                     userId,
                 }
             )
         } catch (error) {
-            
+            console.log("Appwrite service :: createPost() :: ", error);
+            return false;   
         }
     }
 
-    async updatePost({title, slug, content, featuredImage, status, userId}){
+    async updatePost({title, slug, content, featuredimage, status}){
         try {
             return await this.databases.updateDocument(
             conf.appwriteDatabaseId,
@@ -45,13 +46,13 @@ export class Service{
             {
                 title,
                 content,
-                featuredImage,
+                featuredimage,
                 status,
             }
             )
         } catch (error) {
             console.log("Appwrite serive :: updatePost :: error", error);
-            
+            return false
         }
     }
 
@@ -98,7 +99,7 @@ export class Service{
     }
 
     // file upload services
-    async uplloadFile(file){
+    async uploadFile(file){
         try {
             return await this.bucket.createFile(
                 conf.appwriteBucketId,
@@ -106,7 +107,7 @@ export class Service{
                 file
             )
         } catch (error) {
-            console.log(error);
+            console.log("Error While uploading the File",error);
             return false;
         }
     }
@@ -127,7 +128,7 @@ export class Service{
         return this.bucket.getFilePreview(
             conf.appwriteBucketId,
             fileId
-        )
+        ).href
     }
 
 }
@@ -155,13 +156,13 @@ const databases = new Databases(client);
 const bucket = new Storage(client);
 
 // Post services
-async function createPost(slug, { title, content, featuredImage, status, userId }) {
+async function createPost(slug, { title, content, featuredimage, status, userId }) {
     try {
         return await databases.createDocument(
             conf.appwriteDatabaseId,
             conf.appwriteCollectionId,
             slug,
-            { title, content, featuredImage, status, userId }
+            { title, content, featuredimage, status, userId }
         );
     } catch (error) {
         console.log("Service :: createPost :: error", error);
@@ -169,13 +170,13 @@ async function createPost(slug, { title, content, featuredImage, status, userId 
     }
 }
 
-async function updatePost({ title, slug, content, featuredImage, status }) {
+async function updatePost({ title, slug, content, featuredimage, status }) {
     try {
         return await databases.updateDocument(
             conf.appwriteDatabaseId,
             conf.appwriteCollectionId,
             slug,
-            { title, content, featuredImage, status }
+            { title, content, featuredimage, status }
         );
     } catch (error) {
         console.log("Service :: updatePost :: error", error);

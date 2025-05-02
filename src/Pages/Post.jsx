@@ -1,64 +1,60 @@
-import React, { useState, useEffect } from 'react'
-import parse from 'html-react-parser'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import React, {useEffect, useState} from 'react'
+import { Link, useNavigate, useParams} from "react-router-dom"
 
-import service from '../appwrite/config.js'
-import  Button  from '../components/Button.jsx'
-import Container from '../components/Container/Container.jsx'
+import appwriteService from "../appwrite/config"
+import {Button} from "../components/index.js"
+import Container from "../components/Container/Container.jsx"
+import parse from "html-react-parser"
+import {useSelector } from "react-redux"
 
-
-const Post = () => {
-  // state to handel the post
+function Post() {
   const [post, setPost] = useState(null)
-  const { slug } = useParams()
+  const {slug} = useParams()
   const navigate = useNavigate()
-  // grab the user data
   const userData = useSelector((state) => state.auth.userData)
-
   const isAuthor = post && userData ? post.userId === userData.$id : false
 
   useEffect(() => {
-    if(slug){
-      service.getPost(slug).then((post) => {
-        if(post){
+    if (slug) {
+      appwriteService.getPost(slug).then((post) => {
+        if (post) {
           setPost(post)
-        }else{
-          navigate('/')
+        }else {
+          navigate("/")
         }
       })
     }
-  },[slug, navigate])
+  }, [slug, navigate])
 
   const deletePost = () => {
-    service.deletePost(post.$id).then((status) => {
+    appwriteService.deletePost(post.$id).then((status) => {
       if (status) {
-        service.deleteFile(post.featuredImage)
-        useNavigate('/')
+        appwriteService.deleteFile(post.featuredImage);
+        navigate("/")
       }
     })
   }
   return post ? (
-    <div>
+    <div className="py-8">
       <Container>
-        <div>
-          <img src={service.getFilePreview(post.featuredImage)} alt={post.title} />
-          {isAuthor && (
-            <div>
-              <Link to={`/EditPosts/${post.$id}`}>
-                <Button>
-                  Edit
-                </Button>
+        <div className='w-full flex justify-center mb-4 relative border rounded-xl p-2'>
+          <img src={appwriteService.getFilePreview(post.featuredImage)} alt={post.title} className='rounded-xl' />
+          { isAuthor && (
+            <div className="absolute-right-6 top-6">
+              <Link to={`/edit-post/${post.$id}`}>
+                <Button bgColor="bg-green-500" className="mr-3">Edit</Button>
               </Link>
-              <Button onclick={deletePost()}>
-                Delete
-              </Button>
+              <Button bgColor="bg-red-500" 
+              onClick={deletePost}
+              >Delete</Button>
             </div>
           )}
         </div>
-        <div>
-          <h2>{post.title}</h2>
-          <div>{parse(post.content)}</div>
+        <div className="w-full mb-6">
+          <h1 className="text-2xl font-bold">{post.title}</h1>
+          <div className="browser-css">
+            {parse(post.content)}
+          </div>
         </div>
       </Container>
     </div>

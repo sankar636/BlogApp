@@ -1,8 +1,16 @@
 import React from 'react'
+import Container from "../components/Container/Container.jsx"
+import PostForm from '../components/PostForm/PostForm.jsx'
 
-const AddPosts = () => {
+function AddPosts() {
+  // console.log("Post Added");
+  
   return (
-    <div>AddPosts</div>
+    <div className='py-6'>
+      <Container>
+        <PostForm />
+      </Container>
+    </div>
   )
 }
 

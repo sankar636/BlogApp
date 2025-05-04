@@ -44,8 +44,9 @@ export default function PostForm({post}){
             if (file) {
                 const fileId = file.$id
                 data.featuredimage = fileId
-                console.log("dbPost Before:");                
-                const dbPost = await appwriteSerice.createPost({...data, userId: userData.$id})
+                console.log("dbPost Before:");  
+                console.log("", userData);                              
+                const dbPost = await appwriteSerice.createPost({...data, userId: fileId.$id})
                 console.log("dbPost After; ", dbPost);                
                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`)

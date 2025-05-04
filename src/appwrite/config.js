@@ -19,6 +19,8 @@ export class Service{
 
     async createPost({slug, title, content, featuredimage, status, userId}){
         try {
+            console.log("CREATEPOST",slug);
+            
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
@@ -87,13 +89,14 @@ export class Service{
     // indexes in appwrite
     async getPosts(queries = [Query.equal("status","active")]){
         try {
+            // console.log("FileId :");            
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 queries
             )
         } catch (error) {
-            console.log(error);            
+            console.log("Error While Getting The Posts",error);            
             return false
         }
     }
@@ -125,19 +128,20 @@ export class Service{
     }
 
     getFilePreview(fileId){
+        // console.log("FileId: ",fileId);        
         return this.bucket.getFilePreview(
             conf.appwriteBucketId,
             fileId
-        ).href
+        )
     }
 
 }
 
 // export class Service{}
 
-const service = new Service()
+const appwriteService = new Service()
 
-export default service
+export default appwriteService
 
 
 // A database is like a structured Excel sheet where data is organized in rows and columns.

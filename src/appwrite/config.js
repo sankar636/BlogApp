@@ -2,7 +2,7 @@
 
 import conf from '../conf/conf.js'
 
-import { Client, ID, Databases, Storage, Query } from 'appwrite'
+import { Client,  Databases, Storage, Query, ID } from 'appwrite'
 
 // Part(1) ---> using class(OOPs)
 export class Service{
@@ -39,12 +39,12 @@ export class Service{
         }
     }
 
-    async updatePost({title, slug, content, featuredimage, status}){
+    async updatePost({title,slug, content, featuredimage, status, id}){
         try {
             return await this.databases.updateDocument(
             conf.appwriteDatabaseId,
             conf.appwriteCollectionId,            
-            slug,
+            id,
             {
                 title,
                 content,
@@ -67,8 +67,8 @@ export class Service{
                 )
             return true;
         } catch (error) {
-            console.log(error);
-            return false;
+            console.log("Appwrite service :: deleteDocument() :: ", error);
+            return false
         }
     }
 
@@ -81,7 +81,7 @@ export class Service{
                 slug
             )
         } catch (error) {
-            console.log(error);            
+            console.log("Appwrite service :: getPost() :: ", error);
             return false
         }
     }
@@ -122,17 +122,19 @@ export class Service{
                 fileId
             )
         } catch (error) {
-         console.log(error);
-         return false;
+            console.log("Appwrite service :: deleteFile() :: ", error);
+            return false
         }
     }
 
-    getFilePreview(fileId){
+    getFileView(fileId){
         // console.log("FileId: ",fileId);        
-        return this.bucket.getFilePreview(
+        const preview = this.bucket.getFileView(
             conf.appwriteBucketId,
             fileId
         )
+        // console.log("Preview",preview);        
+        return preview
     }
 
 }

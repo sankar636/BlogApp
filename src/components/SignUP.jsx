@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 import { login } from '../store/authSlice.js'
 import authService from '../appwrite/auth.js'
 
-const SignUp = () => {
+const Signup = () => {
     const navigate = useNavigate()
     //Error Handel by state
     const [error, setError] = useState("")
@@ -81,4 +81,4 @@ const SignUp = () => {
     );
 }
 
-export default SignUp
+export default Signup

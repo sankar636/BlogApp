@@ -21,7 +21,7 @@ import AllPosts from './Pages/AllPosts.jsx';
 import EditPosts from './Pages/EditPosts.jsx';
 import Post from './Pages/Post.jsx';
 import Login from './Pages/Login.jsx';
-import SignUp from './Pages/SignUp.jsx';
+import SignUp from './Pages/SignUp.jsx'
 
 // ✅ Define your routes
 const router = createBrowserRouter(

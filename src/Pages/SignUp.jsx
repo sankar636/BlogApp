@@ -1,5 +1,5 @@
 import React from 'react'
-import {SignUp as SignUpComponent} from '../components/index.js'
+import {SignUp as SignUpComponent} from '../components/SignUp.jsx'
 const SignUp = () => {
   return (
     <div className='py-8'>
